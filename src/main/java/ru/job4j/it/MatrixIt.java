@@ -3,6 +3,11 @@ package ru.job4j.it;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Класс описывает работу итератора для двухмерно массива int[][]
+ * @author Ilya Kaltygin
+ * @version 1.1
+ */
 public class MatrixIt implements Iterator<Integer> {
     private final int[][] data;
     private int row = 0;
@@ -12,18 +17,24 @@ public class MatrixIt implements Iterator<Integer> {
         this.data = data;
     }
 
+    /**
+     * Метод hasNExt() проверяет есть ли следующий элемент в массиве.
+     * В теле цицкла происходит перемещение итератора по строке.
+     * @return проверяет что индексы корректные
+     * @return
+     */
     @Override
     public boolean hasNext() {
-        if (cell < data[row].length) {
-            return true;
-        }
-        if (cell >= data[row].length) {
-            cell = 0;
-            ++row;
-        }
-        return row <= data.length - 1;
+         while (row < data.length - 1 && cell == data[row].length) {
+             row++;
+             cell = 0;
+         }
+         return cell < data[row].length;
     }
 
+    /**
+     * Метод next возвращает элементы массива
+     */
     @Override
     public Integer next() {
         if (!hasNext()) {

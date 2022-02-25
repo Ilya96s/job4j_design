@@ -21,18 +21,16 @@ public class MatrixItTest {
     @Test
     public void whenFirstEmptyThenNext() {
         int[][] in = {
-            {},
-            {1}
+                {}, {1}
         };
         MatrixIt it = new MatrixIt(in);
         assertThat(it.next(), is(1));
     }
 
     @Test
-    public void whenFirstEmptyThenHasNext() {
+    public void whenFirstEmptyThenHashNext() {
         int[][] in = {
-                {},
-                {1}
+                {}, {1}
         };
         MatrixIt it = new MatrixIt(in);
         assertThat(it.hasNext(), is(true));
@@ -47,6 +45,16 @@ public class MatrixItTest {
         assertThat(it.next(), is(1));
         assertThat(it.next(), is(2));
         assertThat(it.next(), is(3));
+    }
+
+    @Test
+    public void whenFewEmpty() {
+        int[][] in = {
+                {1}, {}, {}, {}, {2}
+        };
+        MatrixIt it = new MatrixIt(in);
+        assertThat(it.next(), is(1));
+        assertThat(it.next(), is(2));
     }
 
     @Test
@@ -75,5 +83,12 @@ public class MatrixItTest {
         MatrixIt it = new MatrixIt(in);
         assertThat(it.hasNext(), is(true));
         assertThat(it.hasNext(), is(true));
+    }
+
+    @Test
+    public void whenNoElements() {
+        int[][] in = {{}, {}, {}};
+        MatrixIt it = new MatrixIt(in);
+        assertThat(it.hasNext(), is(false));
     }
 }
