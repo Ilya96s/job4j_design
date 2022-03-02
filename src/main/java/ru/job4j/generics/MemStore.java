@@ -26,7 +26,7 @@ public final class MemStore<T extends Base> implements Store<T> {
      * Если в хранилище есть объект с таким id, то поверх него запишется id, который передается в параметрах метода
      */
     @Override
-    public boolean replace(java.lang.String id, T model) {
+    public boolean replace(String id, T model) {
         boolean rsl = false;
        if (storage.containsKey(id)) {
           storage.put(id, model);
@@ -40,7 +40,7 @@ public final class MemStore<T extends Base> implements Store<T> {
      * удаление выполнено успешно
      */
     @Override
-    public boolean delete(java.lang.String id) {
+    public boolean delete(String id) {
         boolean rsl = false;
         if (storage.get(id) != null) {
             storage.remove(id);
