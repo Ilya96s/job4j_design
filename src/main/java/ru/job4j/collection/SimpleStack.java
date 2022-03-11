@@ -22,7 +22,7 @@ public class SimpleStack<T> {
      * Метод удаляет верхний элемент из коллекции
      * @return возвращает удаленный элемент
      */
-    public T poop() {
+    public T pop() {
         return linked.deleteFirst();
     }
 
