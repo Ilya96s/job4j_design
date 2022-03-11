@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  * Реализовать метод Delete для односвязного списка
  * @param <T>
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class ForwardLinked<T> implements Iterable<T> {
     private Node<T> head;
@@ -34,9 +34,7 @@ public class ForwardLinked<T> implements Iterable<T> {
      * @param value
      */
     public void addFirst(T value) {
-        Node<T> newNode = new Node<>(value, null);
-        newNode.next = head;
-        head = newNode;
+        head = new Node<>(value, head);
     }
 
     /**
