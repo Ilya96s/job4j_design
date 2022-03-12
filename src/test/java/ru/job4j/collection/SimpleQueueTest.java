@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-
 public class SimpleQueueTest {
 
     @Test
@@ -42,6 +41,7 @@ public class SimpleQueueTest {
         SimpleQueue<Integer> queue = new SimpleQueue<>();
         queue.poll();
     }
+
     @Test
     public void whenPushPushPollAndPush() {
         SimpleQueue<Integer> queue = new SimpleQueue<>();
