@@ -1,11 +1,13 @@
 package ru.job4j.collection;
 
+import java.util.NoSuchElementException;
+
 /**
  * Необходимо реализовать очередь на двух стеках по принципу FIFO
  * FIFO - first in first out
  * @param <T>
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
@@ -19,6 +21,9 @@ public class SimpleQueue<T> {
      */
     public T poll() {
         if (outSize == 0) {
+            if (inSize == 0) {
+                throw new NoSuchElementException();
+            }
             while (inSize != 0) {
                 out.push(in.pop());
                 inSize--;
