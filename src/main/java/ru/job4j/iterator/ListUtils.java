@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 /**
  * Реализация методов интерфейса ListIterator
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class ListUtils {
 
@@ -19,15 +19,8 @@ public class ListUtils {
      */
     public static <T> void addBefore(List<T> list, int index, T value) {
         Objects.checkIndex(index, list.size());
-        ListIterator<T> iterator = list.listIterator();
-        while (iterator.hasNext()) {
-            if (iterator.nextIndex() == index) {
-                iterator.add(value);
-                break;
-            }
-            iterator.next();
+        list.listIterator(index).add(value);
         }
-    }
 
     /**
      * Метод вставляет элемент в список  после индекса
@@ -38,16 +31,8 @@ public class ListUtils {
      */
     public static <T> void addAfter(List<T> list, int index, T value) {
         Objects.checkIndex(index, list.size());
-        ListIterator<T> iterator = list.listIterator();
-        while (iterator.hasNext()) {
-            iterator.next();
-            if (iterator.nextIndex() > index) {
-                iterator.add(value);
-                break;
-            }
-            iterator.next();
+        list.listIterator(index + 1).add(value);
         }
-    }
 
     /**
      * Метод удялает все элементы в списке которые удовлетворяют предикату
