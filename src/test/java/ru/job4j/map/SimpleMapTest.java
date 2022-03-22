@@ -83,6 +83,14 @@ public class SimpleMapTest {
     public void whenGetIteratorFromEmptyListThenNextThrowException() {
         Map<Integer, String> map = new SimpleMap<>();
         map.iterator().next();
+    }
 
+    @Test
+    public void whenExpendTable() {
+        SimpleMap<Integer, Integer> map = new SimpleMap<>();
+        for (int i = 0; i < 10; i++) {
+            map.put(i, i);
+        }
+        assertThat(map.size(), is(16));
     }
 }

@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * @param <K> Обощенный тип
  * @param <V> Обобщенный тип
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -38,13 +38,22 @@ public class SimpleMap<K, V> implements Map<K, V> {
         }
 
         MapEntry<K, V> newElement = new MapEntry<>(key, value);
-        boolean result = table[indexFor(hash(key.hashCode()))] == null;
+        int index = indexFor(hash(key.hashCode()));
+        boolean result = table[index] == null;
         if (result) {
-            table[indexFor(hash(key.hashCode()))] = newElement;
+            table[index] = newElement;
             modCount++;
             count++;
         }
         return result;
+    }
+
+    /**
+     * Метод определяет размер хэш таблицы
+     * @return Количество бакетов в хэш таблице
+     */
+    public int size() {
+        return capacity;
     }
 
     /**
@@ -62,7 +71,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
      * @return бакет
      */
     private int indexFor(int hash) {
-        return hash & (table.length - 1);
+        return hash & (capacity - 1);
     }
 
     /**
@@ -70,11 +79,14 @@ public class SimpleMap<K, V> implements Map<K, V> {
      * Создает новую таблицу и копирует элементы из старой таблицы в новую
      */
     private void expand() {
-        MapEntry<K, V>[] newTable = new MapEntry[capacity * 2];
-        for (int i = 0; i < table.length; i++) {
-            if (table[i] != null) {
-                newTable[i] = table[i];
-            }
+        capacity *= 2;
+        MapEntry<K, V>[] newTable = new MapEntry[capacity];
+        Iterator<K> it = iterator();
+        while (it.hasNext()) {
+            K elementKey = it.next();
+            MapEntry<K, V> newElement = new MapEntry<>(elementKey, get(elementKey));
+            int index = indexFor(hash(elementKey.hashCode()));
+            newTable[index] = newElement;
         }
         table = newTable;
     }
@@ -88,7 +100,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         int index = indexFor(hash(key.hashCode()));
         MapEntry<K, V> element = table[index];
-        if (table[index] != null) {
+        if (table[index] != null && table[index].key.equals(key)) {
             return element.value;
         }
         return null;
@@ -102,7 +114,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean remove(K key) {
         int index = indexFor(hash(key.hashCode()));
-        if (table[index] != null) {
+        if (table[index] != null && table[index].key.equals(key)) {
             table[index] = null;
             modCount++;
             count--;
