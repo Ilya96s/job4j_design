@@ -9,7 +9,7 @@ import java.util.function.Predicate;
  * Создать элементарную структуру дерева
  * @param <E>
  * @author  Ilya Kaltygin
- * @version 1.0
+ * @version 1.2
  */
 public class SimpleTree<E> implements Tree<E> {
     private final Node<E> root;
@@ -42,19 +42,39 @@ public class SimpleTree<E> implements Tree<E> {
     }
 
     /**
-     * Метод поиска узла по его значению. Используется алгоритм обхода
-     * дерева в ширину на струткре Queue
+     * Метод поиска узла по его значению.
      * @param value Значение для поиска
      * @return Найденный узел
      */
     @Override
     public Optional<Node<E>> findBy(E value) {
+        Predicate<Node<E>> condition = (e -> e.value.equals(value));
+        return findByPredicate(condition);
+    }
+
+    /**
+     * Метод проверяет количество дочерних элементов в дереве,
+     * если их > 2, то дерево не бинарное
+     * @return true если дерево бинарное, иначе false
+     */
+    public boolean isBinary() {
+        Predicate<Node<E>> condition = (e -> e.children.size() > 2);
+        return findByPredicate(condition).isEmpty();
+    }
+
+    /**
+     * Метод обхода дерева, поиск узла по предикату. Используется алгоритм обхода
+     * дерева в ширину на струткре Queue
+     * @param condition Предикат
+     * @return результат предиката
+     */
+    private Optional<Node<E>> findByPredicate(Predicate<Node<E>> condition) {
         Optional<Node<E>> rsl = Optional.empty();
         Queue<Node<E>> data = new LinkedList<>();
         data.offer(this.root);
         while (!data.isEmpty()) {
             Node<E> el = data.poll();
-            if (el.value.equals(value)) {
+            if (condition.test(el)) {
                 rsl = Optional.of(el);
                 break;
             }
