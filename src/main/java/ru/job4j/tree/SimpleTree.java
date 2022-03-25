@@ -3,6 +3,7 @@ package ru.job4j.tree;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.function.Predicate;
 
 /**
  * Создать элементарную структуру дерева
@@ -31,12 +32,11 @@ public class SimpleTree<E> implements Tree<E> {
      */
     @Override
     public boolean add(E parent, E child) {
-        boolean rsl = false;
         Optional<Node<E>> foundParent = findBy(parent);
         Optional<Node<E>> foundChild = findBy(child);
-        if (foundParent.isPresent() && foundChild.isEmpty()) {
-           foundParent.get().children.add(new Node<>(child));
-            rsl = true;
+        boolean rsl = foundParent.isPresent() && foundChild.isEmpty();
+        if (rsl) {
+            foundParent.get().children.add(new Node<>(child));
         }
         return rsl;
     }
