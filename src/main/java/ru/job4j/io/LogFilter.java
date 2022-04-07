@@ -16,7 +16,7 @@ public class LogFilter {
      * @param file Имя файла
      * @return Отфильтрованный список
      */
-    public static List<String> filter(String file) {
+    public List<String> filter(String file) {
         List<String> list = new ArrayList<>();
         try (BufferedReader buff = new BufferedReader(new FileReader("log.txt"))) {
             buff.lines()
@@ -28,27 +28,10 @@ public class LogFilter {
         return list;
     }
 
-    /**
-     * Метод принимает список и записывает данные в файл
-     * @param log Список, данные которого необходимо записать
-     * @param file Имя файла
-     */
-    public static void save(List<String> log, String file) {
-        try (PrintWriter out = new PrintWriter(
-                new BufferedOutputStream(
-                        new FileOutputStream(file)
-                ))) {
-            for (String str : log) {
-                out.printf("%s%n", str);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void main(String[] args) {
-        List<String> log = filter("log.txt");
-        save(log, "404.txt");
+        LogFilter logFilter = new LogFilter();
+        List<String> log = logFilter.filter("log.txt");
+        log.forEach(System.out::println);
     }
 }
 
