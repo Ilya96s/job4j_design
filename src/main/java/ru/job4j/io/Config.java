@@ -10,7 +10,7 @@ import java.util.StringJoiner;
 /**
  * Чтение файла конфигурации
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class Config {
 
@@ -45,7 +45,7 @@ public class Config {
      */
     public String value(String key) {
         if (!values.containsKey(key) || key == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Incorrect key");
         }
         return values.get(key);
     }
