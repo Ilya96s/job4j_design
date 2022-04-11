@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 /**
  * Тестирование IO. Интеграционные тесты
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class AnalizyTest {
 
@@ -41,5 +41,24 @@ public class AnalizyTest {
                     .forEach(sb::append);
         }
         assertThat(sb.toString(), is("10:58:01;10:59:01;"));
+    }
+
+    @Test
+    public void whenServerAlwaysRunning() throws IOException {
+        File source = folder.newFile("source.txt");
+        File target = folder.newFile("target.txt");
+        try (PrintWriter pr = new PrintWriter(source)) {
+            pr.println("200 10:56:01");
+            pr.println("200 10:57:01");
+            pr.println("200 10:58:01");
+        }
+        Analizy analizy = new Analizy();
+        analizy.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(target))) {
+            br.lines()
+                    .forEach(sb::append);
+        }
+        assertThat(sb.toString(), is(""));
     }
 }
