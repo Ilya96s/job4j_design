@@ -10,7 +10,7 @@ import java.util.StringJoiner;
 /**
  * Чтение файла конфигурации
  * @author Ilya Kaltygin
- * @version 1.2
+ * @version 1.3
  */
 public class Config {
 
@@ -33,7 +33,9 @@ public class Config {
                     .filter(line -> !line.startsWith("#") && line.contains("="))
                     .forEach(line -> {
                         String[] array = line.split("=");
-                        values.put(array[0], array[1]);
+                        if (array[0] != null && array[1] != null) {
+                            values.put(array[0], array[1]);
+                        }
                     });
         } catch (IOException e) {
             e.printStackTrace();
