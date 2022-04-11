@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * Анализ доступности сервера
  * @author Ilya Kaltygin
- * @version 1.1
+ * @version 1.2
  */
 public class Analizy {
 
@@ -22,13 +22,13 @@ public class Analizy {
         try (BufferedReader br = new BufferedReader(new FileReader(source))) {
             br.lines()
                     .forEach(line -> {
-                        if (status && line.contains("400") || line.contains("500")) {
+                        if (status && (line.contains("400") || line.contains("500"))) {
                             status = false;
                             String[] array = line.split(" ");
                             sb.append(array[1])
                                     .append(";");
                         }
-                        if (!status && line.contains("200") || line.contains("300")) {
+                        if (!status && (line.contains("200") || line.contains("300"))) {
                             status = true;
                             String[] array = line.split(" ");
                             sb.append(array[1])
