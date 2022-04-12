@@ -23,4 +23,28 @@ public class ConfigTest {
         config.load();
         assertThat(config.value("name"), is(Matchers.nullValue()));
     }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void whenKeyIsMissing() {
+        String path = "data/keyIsMissing";
+        Config config = new Config(path);
+        config.load();
+        assertThat(config.value("key"), is("value"));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void whenValueIsMissing() {
+        String path = "data/valueIsMissing.properties";
+        Config config = new Config(path);
+        config.load();
+        assertThat(config.value("key"), is("value"));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void whenIncorrectData() {
+        String path = "data/incorrectData.properties";
+        Config config = new Config(path);
+        config.load();
+        assertThat(config.value("hibernate"), is("connection"));
+    }
 }
