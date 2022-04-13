@@ -13,6 +13,8 @@ import static java.nio.file.FileVisitResult.*;
 
 /**
  * Класс, который имплементирует интерфейс FileVisitor и содержик логику обхода дерева файлов
+ * @author Ilya Kaltygin
+ * @version 1.1
  */
 public class SearchFiles implements FileVisitor<Path> {
     /**
@@ -56,7 +58,6 @@ public class SearchFiles implements FileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         if (predicate.test(file)) {
             pathList.add(file);
-            System.out.println(file.getFileName());
         }
         return CONTINUE;
     }
