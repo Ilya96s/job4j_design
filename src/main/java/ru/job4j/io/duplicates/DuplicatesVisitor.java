@@ -10,14 +10,14 @@ import java.util.*;
 /**
  * Логика обхода дерева файлов
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
     /**
      * Множество, куда записываются файлы
      */
-    Set<FileProperty> setFile = new HashSet<>();
+    Map<FileProperty, Path> fileMap = new HashMap<>();
 
     /**
      * Метод вызывается каждый раз, когда происходит обращение к файлу
@@ -29,9 +29,12 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         FileProperty fileProperty = new FileProperty(file.toFile().length(), file.toFile().getName());
-        if (!setFile.add(fileProperty)) {
+        if (fileMap.containsKey(fileProperty)) {
             System.out.println(file.toAbsolutePath());
+        } else {
+            fileMap.put(fileProperty, file);
         }
+        System.out.println(file.getFileName());
         return super.visitFile(file, attrs);
     }
 }
