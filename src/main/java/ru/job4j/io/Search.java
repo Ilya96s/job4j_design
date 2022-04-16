@@ -1,5 +1,6 @@
 package ru.job4j.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,7 +11,7 @@ import java.util.function.Predicate;
 /**
  * Сканирование файловой системы
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class Search {
     public static void main(String[] args) {
@@ -40,8 +41,18 @@ public class Search {
      * @param args массив параметров, которые указаны в Program arguments
      */
     public static void parameterCheck(String[] args) {
-        if (args.length == 0 || !args[1].equals("txt")) {
+        if (args.length != 2) {
             throw new IllegalArgumentException("Invalid input parameters");
+        }
+
+        File file = new File(args[0]);
+
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format("Path does not exist %s", file.getAbsolutePath()));
+        }
+
+        if (!args[1].startsWith(".")) {
+            throw new IllegalArgumentException("Invalid file extension setting");
         }
     }
 }
