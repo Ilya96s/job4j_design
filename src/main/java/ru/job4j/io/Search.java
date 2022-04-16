@@ -14,8 +14,9 @@ import java.util.function.Predicate;
  */
 public class Search {
     public static void main(String[] args) {
-        Path start = Paths.get("C:\\Users\\IULIA\\Desktop\\X");
-        search(start, file -> file.toFile().getName().startsWith("1"));
+        parameterCheck(args);
+        Path start = Paths.get(args[0]);
+        search(start, file -> file.toFile().getName().endsWith(args[1])).forEach(System.out::println);
     }
 
     /**
@@ -32,5 +33,15 @@ public class Search {
             e.printStackTrace();
         }
         return searcher.getPath();
+    }
+
+    /**
+     * Валидация параметров
+     * @param args массив параметров, которые указаны в Program arguments
+     */
+    public static void parameterCheck(String[] args) {
+        if (args.length == 0 || !args[1].equals("txt")) {
+            throw new IllegalArgumentException("Invalid input parameters");
+        }
     }
 }
