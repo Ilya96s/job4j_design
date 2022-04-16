@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 /**
  * Сканирование файловой системы
  * @author Ilya Kaltygin
- * @version 1.1
+ * @version 1.2
  */
 public class Search {
     public static void main(String[] args) {
@@ -40,7 +40,7 @@ public class Search {
      * Валидация параметров
      * @param args массив параметров, которые указаны в Program arguments
      */
-    public static void parameterCheck(String[] args) {
+    private static void parameterCheck(String[] args) {
         if (args.length != 2) {
             throw new IllegalArgumentException("Invalid input parameters");
         }
@@ -49,6 +49,10 @@ public class Search {
 
         if (!file.exists()) {
             throw new IllegalArgumentException(String.format("Path does not exist %s", file.getAbsolutePath()));
+        }
+
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Path is not a directory %s", file.getAbsolutePath()));
         }
 
         if (!args[1].startsWith(".")) {
