@@ -15,9 +15,9 @@ import java.util.*;
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
     /**
-     * Множество, куда записываются файлы
+     * Карта, куда записываются файлы
      */
-    Map<FileProperty, Path> fileMap = new HashMap<>();
+    Map<FileProperty, List<Path>> fileMap = new HashMap<>();
 
     /**
      * Метод вызывается каждый раз, когда происходит обращение к файлу
@@ -29,12 +29,26 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         FileProperty fileProperty = new FileProperty(file.toFile().length(), file.toFile().getName());
-        if (fileMap.containsKey(fileProperty)) {
-            System.out.println(file.toAbsolutePath());
-        } else {
-            fileMap.put(fileProperty, file);
+        if (!fileMap.containsKey(fileProperty)) {
+            fileMap.put(fileProperty, new ArrayList<>());
         }
-        System.out.println(file.getFileName());
+        List<Path> list = fileMap.get(fileProperty);
+        list.add(file.toAbsolutePath());
         return super.visitFile(file, attrs);
+    }
+
+    /**
+     * Метод проходит по всем значениям мапы и если список содержит больше 1 элемента,
+     * то выводит элементы списка
+     */
+    public void printDuplicateFiles() {
+        for (FileProperty x : fileMap.keySet()) {
+            List<Path> list = fileMap.get(x);
+            if (list.size() > 1) {
+                for (Path el : list) {
+                    System.out.println(el);
+                }
+            }
+        }
     }
 }
