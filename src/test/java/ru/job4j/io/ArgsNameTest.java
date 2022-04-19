@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 /**
  * Тесты
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class ArgsNameTest {
 
@@ -39,5 +39,10 @@ public class ArgsNameTest {
     @Test(expected = IllegalArgumentException.class)
     public void whenWrongSomeArgument() {
         ArgsName jvm = ArgsName.of(new String[] {"-key="});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenWrongPrefixArgument() {
+        ArgsName jvm = ArgsName.of(new String[] {"key=value"});
     }
 }
