@@ -7,7 +7,7 @@ import java.util.Map;
  * Именованные аргументы
  * Прием массива параметров и разбиение их на пары: ключ=значение
  * @author Ilya Kaltygin
- * @version 1.1
+ * @version 1.2
  */
 public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
@@ -33,8 +33,8 @@ public class ArgsName {
             throw new IllegalArgumentException("Parameters does not exist");
         }
         for (String el : args) {
+            stringValidation(el);
             String[] split = el.split("=", 2);
-            stringValidation(split[1]);
             StringBuilder sb = new StringBuilder(split[0]);
             if (sb.charAt(0) == '-') {
                 sb.deleteCharAt(0);
@@ -50,8 +50,15 @@ public class ArgsName {
     }
 
     private static void stringValidation(String str) {
-        if (str.isEmpty()) {
+        String[] split = str.split("=", 2);
+        if (!str.contains("=") || split[0].isEmpty() || split[1].isEmpty()) {
             throw new IllegalArgumentException("Argument should be: key=value");
         }
+    }
+
+    public static void main(String[] args) {
+        String[] a = {"12346"};
+        ArgsName name = new ArgsName();
+        name.parse(a);
     }
 }
