@@ -7,7 +7,7 @@ import java.util.Map;
  * Именованные аргументы
  * Прием массива параметров и разбиение их на пары: ключ=значение
  * @author Ilya Kaltygin
- * @version 1.3
+ * @version 1.4
  */
 public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
@@ -52,13 +52,7 @@ public class ArgsName {
     private static void stringValidation(String str) {
         String[] split = str.split("=", 2);
         if (split[0].isEmpty() || !split[0].startsWith("-") || split[1].isEmpty()) {
-            throw new IllegalArgumentException("Argument should be: key=value");
+            throw new IllegalArgumentException("Argument should be: -key=value");
         }
-    }
-
-    public static void main(String[] args) {
-        String[] a = {"12346"};
-        ArgsName name = new ArgsName();
-        name.parse(a);
     }
 }
