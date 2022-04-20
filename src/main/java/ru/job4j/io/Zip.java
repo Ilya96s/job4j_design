@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -12,7 +13,7 @@ import java.util.zip.ZipOutputStream;
  * Архивировать проект
  * Утилита для архивации папки
  * @author Ilya Kaltygin
- * @version 1.1
+ * @version 1.2
  */
 public class Zip {
 
@@ -81,11 +82,9 @@ public class Zip {
                 path -> !path.toFile()
                         .getName()
                         .endsWith(arguments.get("e")));
-        List<File> fileList = new ArrayList<>();
         for (Path file : pathList) {
-            fileList.add(file.toFile());
+            zip.packFiles(Collections.singletonList(file.toFile()), new File(arguments.get("o")));
         }
-        zip.packFiles(fileList, new File(arguments.get("o")));
     }
 }
 
