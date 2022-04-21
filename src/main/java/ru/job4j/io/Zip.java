@@ -13,7 +13,7 @@ import java.util.zip.ZipOutputStream;
  * Архивировать проект
  * Утилита для архивации папки
  * @author Ilya Kaltygin
- * @version 1.2
+ * @version 1.3
  */
 public class Zip {
 
@@ -22,11 +22,11 @@ public class Zip {
      * @param sources Список файлов
      * @param target Имя и расширение архива
      */
-    public void packFiles(List<File> sources, File target) {
+    public void packFiles(List<Path> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            for (File file : sources) {
-                zip.putNextEntry(new ZipEntry(file.getPath()));
-                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(file))) {
+            for (Path file : sources) {
+                zip.putNextEntry(new ZipEntry(file.toFile().getAbsolutePath()));
+                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(file.toFile()))) {
                     zip.write(out.readAllBytes());
                 }
             }
@@ -82,9 +82,7 @@ public class Zip {
                 path -> !path.toFile()
                         .getName()
                         .endsWith(arguments.get("e")));
-        for (Path file : pathList) {
-            zip.packFiles(Collections.singletonList(file.toFile()), new File(arguments.get("o")));
-        }
+            zip.packFiles(pathList, new File(arguments.get("o")));
     }
 }
 
