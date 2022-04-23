@@ -16,8 +16,8 @@ import java.util.Scanner;
  * - при вводе слова «закончить» программа прекращает работу.
  * - запись диалога, включая слова-команды стоп/продолжить/закончить должны быть записаны в текстовый лог.
  *
- * @author Ilya KAltygin
- * @version 1.0
+ * @author Ilya Kaltygin
+ * @version 1.1
  */
 public class ConsoleChat {
     private static final String OUT = "Закончить";
@@ -47,16 +47,16 @@ public class ConsoleChat {
         boolean botStatus = true;
         phrase = readPhrases();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Ввести что то");
+        System.out.println("Введите текст");
         while (chatStatus) {
-            String line = scanner.nextLine();
-            switch (line) {
+            String userQuestion = scanner.nextLine();
+            switch (userQuestion) {
                 case STOP -> {
-                    log.add(line);
+                    log.add("User: " + userQuestion);
                     botStatus = false;
                 }
                 case OUT -> {
-                    log.add(line);
+                    log.add("User: " + userQuestion);
                     chatStatus = false;
                 }
                case CONTINUE -> {
@@ -64,10 +64,10 @@ public class ConsoleChat {
                }
                 default -> {
                     if (botStatus) {
-                        String answer = phrase.get((int) (Math.random() * phrase.size()));
-                        log.add(line);
-                        log.add(answer);
-                        System.out.println(answer);
+                        String botAnswer = phrase.get((int) (Math.random() * phrase.size()));
+                        log.add("User: " + userQuestion);
+                        log.add("Bot: " + botAnswer);
+                        System.out.println(botAnswer);
                     }
                 }
             }
