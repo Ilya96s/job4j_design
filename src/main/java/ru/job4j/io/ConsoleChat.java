@@ -17,7 +17,7 @@ import java.util.Scanner;
  * - запись диалога, включая слова-команды стоп/продолжить/закончить должны быть записаны в текстовый лог.
  *
  * @author Ilya Kaltygin
- * @version 1.1
+ * @version 1.2
  */
 public class ConsoleChat {
     private static final String OUT = "Закончить";
@@ -51,18 +51,22 @@ public class ConsoleChat {
         while (chatStatus) {
             String userQuestion = scanner.nextLine();
             switch (userQuestion) {
-                case STOP -> {
+                case STOP:
                     log.add("User: " + userQuestion);
                     botStatus = false;
-                }
-                case OUT -> {
+                    break;
+
+                case OUT:
                     log.add("User: " + userQuestion);
                     chatStatus = false;
-                }
-               case CONTINUE -> {
-                   botStatus = true;
-               }
-                default -> {
+                    break;
+
+                case CONTINUE:
+                    log.add("User: " + userQuestion);
+                    botStatus = true;
+                    break;
+
+                default:
                     if (botStatus) {
                         String botAnswer = phrase.get((int) (Math.random() * phrase.size()));
                         log.add("User: " + userQuestion);
@@ -71,9 +75,8 @@ public class ConsoleChat {
                     }
                 }
             }
-        }
         serverLog(log);
-    }
+        }
 
     /**
      * Метод считывает фразы бота из файла и сохраняет их в список
