@@ -10,7 +10,7 @@ import java.util.Scanner;
  * Класс, задача которого прочитать данные из файла CSV и записать их в файл.
  *  В качестве входных данных задается путь к файлу path, разделитель delimiter, приемник данных out и фильтр по столбцам filter
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class CSVReader {
 
@@ -56,6 +56,12 @@ public class CSVReader {
     private void parameterCheck(String[] args) {
         if (args.length != 4) {
             throw new IllegalArgumentException("Invalid input parameters");
+        }
+
+        File file = new File(args[0]);
+
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format("Path does not exist %s", file.getAbsolutePath()));
         }
     }
 
