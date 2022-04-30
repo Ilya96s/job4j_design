@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Реализация простейшего взаимодействия между клиентом и сервером
@@ -15,7 +17,10 @@ import java.net.Socket;
  * @version 1.1
  */
 public class EchoServer {
-    public static void main(String[] args) throws IOException {
+
+    private static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
+
+    public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(9000)) {
             while (!server.isClosed()) {
                 Socket socket = server.accept();
@@ -31,12 +36,14 @@ public class EchoServer {
                     } else {
                         out.write("What".getBytes());
                     }
-                        for (String str = in.readLine(); str != null && !str.isEmpty(); str = in.readLine()) {
-                            System.out.println(str);
-                        }
-                        out.flush();
+                    for (String str = in.readLine(); str != null && !str.isEmpty(); str = in.readLine()) {
+                        System.out.println(str);
                     }
+                    out.flush();
                 }
             }
+        } catch (IOException e) {
+            LOG.error("IOException", e);
         }
     }
+}
