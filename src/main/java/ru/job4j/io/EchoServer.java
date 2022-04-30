@@ -10,6 +10,9 @@ import java.net.Socket;
 /**
  * Реализация простейшего взаимодействия между клиентом и сервером
  * В качестве клиента используется программа cURL
+ *
+ * @author Ilya Kaltygin
+ * @version 1.0
  */
 public class EchoServer {
     public static void main(String[] args) throws IOException {
@@ -19,16 +22,25 @@ public class EchoServer {
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
-                    if (in.readLine().contains("Bye")) {
+                    String request = in.readLine();
+                    if (request.contains("Exit")) {
+                        in.close();
+                        out.close();
+                        socket.close();
                         server.close();
+                    } else if (request.contains("Hello")) {
+                        out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                        out.write("Hello".getBytes());
+                    } else {
+                        out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                        out.write("What".getBytes());
                     }
-                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-                    for (String str = in.readLine(); str != null && !str.isEmpty(); str = in.readLine()) {
-                        System.out.println(str);
+                        for (String str = in.readLine(); str != null && !str.isEmpty(); str = in.readLine()) {
+                            System.out.println(str);
+                        }
+                        out.flush();
                     }
-                    out.flush();
                 }
             }
         }
     }
-}
