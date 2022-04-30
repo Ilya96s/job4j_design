@@ -12,7 +12,7 @@ import java.net.Socket;
  * В качестве клиента используется программа cURL
  *
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class EchoServer {
     public static void main(String[] args) throws IOException {
@@ -22,17 +22,13 @@ public class EchoServer {
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
+                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                     String request = in.readLine();
                     if (request.contains("Exit")) {
-                        in.close();
-                        out.close();
-                        socket.close();
                         server.close();
                     } else if (request.contains("Hello")) {
-                        out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                         out.write("Hello".getBytes());
                     } else {
-                        out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                         out.write("What".getBytes());
                     }
                         for (String str = in.readLine(); str != null && !str.isEmpty(); str = in.readLine()) {
