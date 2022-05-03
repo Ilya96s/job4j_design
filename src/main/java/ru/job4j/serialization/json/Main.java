@@ -1,26 +1,41 @@
 package ru.job4j.serialization.json;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 /**
- * Преобразование объекта в JSON и обратно
+ * Сериализация объекта в XML и десериализация
  *
  * @author Ilya Kaltygin
  * @version 1.0
  */
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         final Car car = new Car(false, 2085, "Hatchback", new Driver("Ivan", 35),
                 new Driver[] {new Driver("Oleg", 29), new Driver("Fedor", 45)});
 
-        /* Сериализация объекта в JSON */
-        final Gson gson = new GsonBuilder().create();
-        String jsonString = gson.toJson(car);
-        System.out.println(jsonString);
-
-        /* Десериализация JSON в объект */
-        Car carFromJson = gson.fromJson(jsonString, Car.class);
-        System.out.println(carFromJson);
+        /* Получаем контекст для доступа к АПИ */
+        JAXBContext context = JAXBContext.newInstance(Car.class);
+        /* Создаем сериализатор */
+        Marshaller marshaller = context.createMarshaller();
+        /* Указываем, что нам нужно форматирование */
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        String xml = "";
+        try (StringWriter writer = new StringWriter()) {
+            /* Сериализуем */
+            marshaller.marshal(car, writer);
+            xml = writer.getBuffer().toString();
+            System.out.println(xml);
+        }
+        /* Для десериализации нам нужно создать десериализатор */
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        try (StringReader reader = new StringReader(xml)) {
+            /* десериализуем */
+            Car result = (Car) unmarshaller.unmarshal(reader);
+            System.out.println(result);
+        }
     }
 }
