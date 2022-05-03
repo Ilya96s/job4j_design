@@ -2,7 +2,9 @@
 <car isElectroCar="false" weight="2085" type="Hatchback">
     <currecntDriver name="Ivan" age="27"/>
     <currecntDriverses>
-        <currentDrivers>name="Alex" age="30"</currentDrivers>
-        <currentDrivers>name="Fedor" age="35"</currentDrivers>
+        <name>Alex</name>
+        <age>30</age>
+        <name>Fedor</name>
+        <age>35</age>
     </currecntDriverses>
 </car>
