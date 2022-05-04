@@ -1,41 +1,43 @@
 package ru.job4j.serialization.json;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
-import java.io.StringWriter;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Сериализация объекта в XML и десериализация
+ * Преобразование JSON в POJO. JsonObject
  *
  * @author Ilya Kaltygin
  * @version 1.0
  */
 public class Main {
     public static void main(String[] args) throws Exception {
+
+        JSONObject jsonCurrentDriver = new JSONObject("{\"name\":\"Ivan\", \"age\" : \"35\"}");
+
+        /* JSONArray из ArrayList */
+        List<Driver> list = new ArrayList<>();
+        list.add(new Driver("Oleg", 29));
+        list.add(new Driver("Fedor", 45));
+        JSONArray jsonPreviousDrivers = new JSONArray(list);
+
         final Car car = new Car(false, 2085, "Hatchback", new Driver("Ivan", 35),
                 new Driver[] {new Driver("Oleg", 29), new Driver("Fedor", 45)});
 
-        /* Получаем контекст для доступа к АПИ */
-        JAXBContext context = JAXBContext.newInstance(Car.class);
-        /* Создаем сериализатор */
-        Marshaller marshaller = context.createMarshaller();
-        /* Указываем, что нам нужно форматирование */
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        String xml = "";
-        try (StringWriter writer = new StringWriter()) {
-            /* Сериализуем */
-            marshaller.marshal(car, writer);
-            xml = writer.getBuffer().toString();
-            System.out.println(xml);
-        }
-        /* Для десериализации нам нужно создать десериализатор */
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        try (StringReader reader = new StringReader(xml)) {
-            /* десериализуем */
-            Car result = (Car) unmarshaller.unmarshal(reader);
-            System.out.println(result);
-        }
+        /* JSONObject напрямую методом put */
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("isElectroCat", car.isElectroCar());
+        jsonObject.put("weight", car.getWeight());
+        jsonObject.put("type", car.getType());
+        jsonObject.put("currentDriver", jsonCurrentDriver);
+        jsonObject.put("previousDrivers", jsonPreviousDrivers);
+
+        /* Выведем результат в консоль */
+        System.out.println(jsonObject);
+
+        /* Преобразуем объект car в json-строку */
+        System.out.println(new JSONObject(car));
     }
 }
