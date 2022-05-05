@@ -60,4 +60,12 @@ public class Car {
     public String getType() {
         return type;
     }
+
+    public Driver getCurrentDriver() {
+        return currentDriver;
+    }
+
+    public Driver[] getPreviousDrivers() {
+        return previousDrivers;
+    }
 }
