@@ -1,10 +1,9 @@
 package ru.job4j.io.findfile;
 
-import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.PrintWriter;
+import java.nio.file.*;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -13,11 +12,9 @@ import java.util.regex.Pattern;
  * Сканирование файловой системы
  *
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class Search {
-    private List<Path> list;
-    private Predicate<Path> predicate;
 
     /**
      * Метод определяет предикат в зависимости от типа поиска
@@ -27,17 +24,17 @@ public class Search {
     public static Predicate<Path> choiceOfPredicate(Arguments arg) {
         Predicate<Path> predicate = null;
         Pattern pattern;
+        PathMatcher matcher;
         String argument = arg.get("t");
         if (("name").equals(argument)) {
             predicate = (s -> s.toFile().getName().equals(arg.get("n")));
-        }
-        if (("regex").equals(argument)) {
+        } else if (("regex").equals(argument)) {
             pattern = Pattern.compile(arg.get("n"));
             predicate = (s -> s.toFile().getName().matches(pattern.toString()));
+        } else if (("mask").equals(argument)) {
+            matcher = FileSystems.getDefault().getPathMatcher("glob:" + arg.get("n"));
+            predicate = (matcher::matches);
         }
-//        if (("mask").equals(argument)) {
-//            predicate = (s -> s.toFile().getName())
-//        }
         return predicate;
     }
 
@@ -54,10 +51,28 @@ public class Search {
         return searcher.getPathList();
     }
 
+    /**
+     * Запись найденных файлов в файл
+     * @param log файл для записи
+     * @param list список найденных файлов
+     */
+    public static void writeFoundFiles(String log, List<Path> list) {
+        try (PrintWriter writer = new PrintWriter(
+                new FileWriter(log))) {
+            for (Path file : list) {
+                writer.println(file);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         Arguments arg = Arguments.of(args);
         Path start = Paths.get(arg.get("d"));
+        String log = arg.get("o");
         Predicate<Path> predicate = choiceOfPredicate(arg);
-        search(start, predicate);
+        List<Path> list = search(start, predicate);
+        writeFoundFiles(log, list);
     }
 }
