@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Сканирование файловой системы
  *
  * @author Ilya Kaltygin
- * @version 1.1
+ * @version 1.2
  */
 public class Search {
 
@@ -33,7 +33,7 @@ public class Search {
             predicate = (s -> s.toFile().getName().matches(pattern.toString()));
         } else if (("mask").equals(argument)) {
             matcher = FileSystems.getDefault().getPathMatcher("glob:" + arg.get("n"));
-            predicate = (matcher::matches);
+            predicate = (s -> (matcher.matches(s.getFileName())));
         }
         return predicate;
     }
