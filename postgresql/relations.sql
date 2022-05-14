@@ -1,5 +1,5 @@
 -- Отношение one to many;
-create table footbla_club(
+create table footbal_club(
     id serial primary key,
     club_name varchar(128)
 );
@@ -7,7 +7,7 @@ create table footbla_club(
 create table footbal_player(
     id serial primary key,
     player_name varchar(150),
-    footbla_club_id int references footbal_club(id)
+    footbal_club_id int references footbal_club(id)
 );
 
 -- Отношение one to one;
@@ -25,7 +25,7 @@ create table drivers_car(
 );
 
 -- Отношение many to many;
-create table article(
+create table articles(
     id serial primary key,
     article_name text
 );
