@@ -21,7 +21,7 @@ create table drivers_car(
     car_brand varchar(128),
     car_color varchar(128),
     car_number varchar(128),
-    drivers_id int references driver(id)
+    drivers_id int references driver(id) unique
 );
 
 -- Отношение many to many;
