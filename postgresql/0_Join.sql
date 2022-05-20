@@ -61,3 +61,15 @@ select * from departments
 right join employees
 on departments.id = employees.department_id
 where departments.name is not null;
+
+insert into teens(name, gender) values('Иван', 'М');
+insert into teens(name, gender) values('Мария', 'Ж');
+insert into teens(name, gender) values('Алексей', 'М');
+insert into teens(name, gender) values('Таня', 'Ж');
+insert into teens(name, gender) values('Юлия', 'Ж');
+insert into teens(name, gender) values('Настя', 'Ж');
+insert into teens(name, gender) values('Влад', 'М');
+insert into teens(name, gender) values('Егор', 'М');
+
+select t1.name, t2.name from teens as t1 cross join teens as t2
+where t1.gender != t2.gender;
