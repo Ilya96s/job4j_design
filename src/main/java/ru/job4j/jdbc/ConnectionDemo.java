@@ -11,13 +11,13 @@ import java.sql.SQLException;
  * Подключение к Postgres через JDBC
  *
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class ConnectionDemo {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
         Config config = new Config("app.properties");
         config.load();
+        Class.forName(config.value("hibernate.connection.driver_class"));
         try (Connection connection = DriverManager.getConnection(
                 config.value("url"),
                 config.value("login"),
