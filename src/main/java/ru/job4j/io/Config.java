@@ -27,7 +27,7 @@ public class Config {
      */
     public void load() {
         try (BufferedReader br = new BufferedReader(
-                new FileReader("app.properties")
+                new FileReader("src/main/resources/app.properties")
         )) {
             br.lines()
                     .filter(line -> !line.startsWith("#") && line.contains("="))
