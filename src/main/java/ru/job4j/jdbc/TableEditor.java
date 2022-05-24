@@ -11,7 +11,7 @@ import java.util.StringJoiner;
  *  Закомство с интерфейсом Statement. Создание sql запросов
  *
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class TableEditor implements AutoCloseable {
     private Connection connection;
@@ -147,21 +147,17 @@ public class TableEditor implements AutoCloseable {
         Properties config = new Properties();
         try (InputStream in = TableEditor.class.getClassLoader().getResourceAsStream("app.properties")) {
             config.load(in);
-            try (Connection connection = DriverManager.getConnection(
-                    config.getProperty("url"),
-                    config.getProperty("login"),
-                    config.getProperty("password"))) {
-                TableEditor tableEditor = new TableEditor(config);
+            try (TableEditor tableEditor = new TableEditor(config)) {
                 tableEditor.createTable("test_table");
                 System.out.println("Добавление столбца в талицу");
                 tableEditor.addColumn("test_table", "column_1", "varchar(50)");
-                System.out.println(getTableScheme(connection, "test_table"));
+                System.out.println(getTableScheme(tableEditor.connection, "test_table"));
                 System.out.println("Изменение столбца таблицы");
                 tableEditor.renameColumn("test_table", "column_1", "new_column_2");
-                System.out.println(getTableScheme(connection, "test_table"));
+                System.out.println(getTableScheme(tableEditor.connection, "test_table"));
                 System.out.println("Удаление столбца из таблицы");
                 tableEditor.dropColumn("test_table", "new_column_2");
-                System.out.println(getTableScheme(connection, "test_table"));
+                System.out.println(getTableScheme(tableEditor.connection, "test_table"));
                 tableEditor.dropTable("test_table");
             }
         }
