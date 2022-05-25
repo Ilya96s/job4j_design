@@ -15,7 +15,7 @@ import java.util.Properties;
  * Знакомство с интерфейсом PrepareStatement. Создание параметризованных SQL запросов
  *
  * @author Ilya Kaltygin
- * @version 1.0
+ * @version 1.1
  */
 public class ImportDB {
     private Properties cfg;
@@ -36,12 +36,28 @@ public class ImportDB {
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             String line;
             while ((line = rd.readLine()) != null) {
-                String[] array = line.split(";", 3);
+                lineValidation(line);
+                String[] array = line.split(";", 2);
+                StringBuilder sb = new StringBuilder(array[1]);
+                if (sb.charAt(sb.length() - 1) == ';') {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
                 User user = new User(array[0], array[1]);
                 users.add(user);
             }
         }
         return users;
+    }
+
+    /**
+     * Метод проверяет строку на соответсиве шаблона
+     * @param line Проверяемая строка
+     */
+    private static void lineValidation(String line) {
+        String[] array = line.split(";", 2);
+        if (array[0].isEmpty() || array[1].isEmpty()) {
+            throw new IllegalArgumentException("data format should be: name;email;");
+        }
     }
 
     /**
