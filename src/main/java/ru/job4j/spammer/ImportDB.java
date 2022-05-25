@@ -15,7 +15,7 @@ import java.util.Properties;
  * Знакомство с интерфейсом PrepareStatement. Создание параметризованных SQL запросов
  *
  * @author Ilya Kaltygin
- * @version 1.1
+ * @version 1.2
  */
 public class ImportDB {
     private Properties cfg;
@@ -42,7 +42,7 @@ public class ImportDB {
                 if (sb.charAt(sb.length() - 1) == ';') {
                     sb.deleteCharAt(sb.length() - 1);
                 }
-                User user = new User(array[0], array[1]);
+                User user = new User(array[0], sb.toString());
                 users.add(user);
             }
         }
