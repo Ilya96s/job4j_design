@@ -12,4 +12,4 @@ from company
 join person
 on company.id = person.company_id
 group by company.name
-having count(*) = (select company_id from person group by company_id order by count(company_id) desc limit 1);
+having count(*) = (select count(*) from person group by company_id order by count(company_id) desc limit 1);
