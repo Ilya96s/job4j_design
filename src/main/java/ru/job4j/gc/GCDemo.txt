@@ -1,0 +1,100 @@
+  При создании пустого объекта без полей выделяется место под заголовок 12 байт + 4 байт(для кратности 8) = 16 байт.
+
+  Место выделяемое при создании объекта Person person = new Person(1, "Person");
+- Заголовок в системе х64: 16 байт;
+- Поле int age: 4 байт;
+  Поле String name состоит из:
+- Заголовок в системе х64: 16 байт;
+- 3 поля int(offset, count, hash): 3 * 4 = 12 байт;
+- Ссылка на массив char[]: 4 байт;
+  Массив char состоит из:
+- Заголовок в системе х64: 16 байт;
+- Элементы массива(char = 2 байт) * количество символов = 2 * 6 = 12 байт;
+  Для строки необходимо 60 байт;
+  В итоге для создания такого объекта необходимо выделить 16 + 60 = 76 + 4 (для кратности 8) = 80 байт.
+
+
+
+  Размер heap = -Xmx8m -Xms8m
+  При создании 500 объектов, работа GC не происходит:
+
+  === Environment state ===
+  Free: 5
+  Total: 8
+  Max: 8
+  === Environment state ===
+  Free: 6
+  Total: 8
+  Max: 8
+
+
+  Размер heap = -Xmx7m -Xms7m
+  При создании 500 объектов, работа GC не происходит:
+  === Environment state ===
+  Free: 5
+  Total: 8
+  Max: 8
+  === Environment state ===
+  Free: 6
+  Total: 8
+  Max: 8
+
+
+  Размер heap = -Xmx6m -Xms6m
+  При создании 500 объектов, GC начинает работу:
+  === Environment state ===
+  Free: 4
+  Total: 6
+  Max: 6
+  Removed 83 N83
+  Removed 82 N82
+  Removed 81 N81
+  Removed 80 N80
+  Removed 79 N79
+  Removed 78 N78
+  Removed 77 N77
+  Removed 76 N76
+  Removed 75 N75
+  Removed 74 N74
+  Removed 73 N73
+  Removed 72 N72
+  Removed 71 N71
+  Removed 70 N70
+  Removed 69 N69
+  Removed 68 N68
+  Removed 67 N67
+  Removed 66 N66
+  Removed 65 N65
+  Removed 64 N64
+  Removed 63 N63
+  Removed 62 N62
+  Removed 61 N61
+  Removed 60 N60
+  Removed 59 N59
+  Removed 58 N58
+  Removed 57 N57
+  Removed 56 N56
+  === Environment state ===
+  Free: 4
+  Total: 6
+  Removed 55 N55
+  Removed 54 N54
+  Removed 53 N53
+  Removed 52 N52
+  Removed 51 N51
+  Removed 50 N50
+  Removed 49 N49
+  Removed 48 N48
+  Removed 47 N47
+  Removed 46 N46
+  Removed 45 N45
+  Removed 44 N44
+  Removed 43 N43
+  Max: 6
+  Removed 42 N42
+  Removed 41 N41
+  Removed 40 N40
+  Removed 39 N39
+  Removed 38
+
+
