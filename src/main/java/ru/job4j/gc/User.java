@@ -1,11 +1,11 @@
 package ru.job4j.gc;
 
-public class Person {
+public class User {
 
     private int age;
     private String name;
 
-    public Person(int age, String name) {
+    public User(int age, String name) {
         this.age = age;
         this.name = name;
     }
