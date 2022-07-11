@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Файловый класс
@@ -31,15 +33,10 @@ public class DirFileCache extends AbstractCache<String, String> {
     protected String load(String key) {
         String result = "";
         File directory = new File(cachingDir);
-        try (BufferedReader reader = new BufferedReader(new FileReader(directory + key))) {
-            StringBuilder builder = new StringBuilder();
-            reader.lines()
-                    .forEach(s -> builder.append(s).append(System.lineSeparator()));
-            result = builder.toString();
-            put(key, result);
+        try {
+            result = Files.readString(Path.of(cachingDir, key));
         } catch (IOException e) {
             e.printStackTrace();
-
         }
         return result;
     }

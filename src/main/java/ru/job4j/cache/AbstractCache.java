@@ -29,10 +29,10 @@ public abstract class AbstractCache<K, V> {
      * @return Данные
      */
     public V get(K key) {
-        SoftReference<V> softReference = cache.getOrDefault(key, new SoftReference<>(null));
-        V value = softReference.get();
+        V value = cache.getOrDefault(key, new SoftReference<>(null)).get();
         if (value == null) {
             value = load(key);
+            put(key, value);
         }
         return value;
     }
