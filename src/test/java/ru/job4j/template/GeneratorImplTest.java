@@ -39,7 +39,7 @@ public class GeneratorImplTest {
      * В шаблоне есть ключи, которых нет в карте
      */
     @Ignore
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void whenKeysAreNotIntTheMap() {
         Generator generator = new GeneratorImpl();
         Map<String, String> map = new HashMap<>();
