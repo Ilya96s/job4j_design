@@ -74,7 +74,7 @@ public class CinemaTest {
     }
 
     /**
-     * Доступных билетов на выбранную дату нет
+     * Невалидная дата
      */
     @Ignore
     @Test(expected = IllegalArgumentException.class)
@@ -82,7 +82,7 @@ public class CinemaTest {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
-        date.set(2020, 10, 10, 23, 0);
+        date.set(2020, 10, 37, 23, 0);
         Ticket ticket = cinema.buy(account, 1, 1, date);
     }
 
