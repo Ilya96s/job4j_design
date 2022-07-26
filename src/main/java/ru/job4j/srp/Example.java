@@ -11,7 +11,8 @@ import java.util.Scanner;
  * @author Ilya Kaltygin
  */
 public class Example {
-    public static void main(String[] args) throws Exception {
+
+    public static void someMethod(String[] args) throws Exception {
         /* Ввод с клавиатуры */
         Scanner scanner = new Scanner(System.in);
         System.out.println(scanner.nextLine());
