@@ -3,6 +3,7 @@ package ru.job4j.design.srp;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 import static ru.job4j.design.srp.ReportEngine.DATE_FORMAT;
+import static ru.job4j.design.srp.ReportAcc.INDEX;
 import java.util.Calendar;
 
 public class ReportEngineTest {
@@ -65,7 +66,7 @@ public class ReportEngineTest {
                 .append(worker.getName()).append(";")
                 .append(ReportAcc.DATE_FORMAT.format(worker.getHired().getTime())).append(";")
                 .append(ReportAcc.DATE_FORMAT.format(worker.getFired().getTime())).append(";")
-                .append(worker.getSalary() * 1.2).append(";")
+                .append(worker.getSalary() * INDEX).append(";")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true)).isEqualTo(expect.toString());
     }
@@ -89,7 +90,7 @@ public class ReportEngineTest {
                 .append(worker.getName()).append(";")
                 .append(worker.getHired().getTime()).append(";")
                 .append(worker.getFired().getTime()).append(";")
-                .append(worker.getSalary() * 1.2).append(";")
+                .append(worker.getSalary()).append(";")
                 .append(System.lineSeparator())
                 .append("</body>")
                 .append(System.lineSeparator())

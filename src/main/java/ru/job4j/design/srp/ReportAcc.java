@@ -12,6 +12,7 @@ import java.util.function.Predicate;
  */
 public class ReportAcc implements Report {
     static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd:MM:yyyy HH:mm");
+    static final double INDEX = 1.2;
 
     private Store store;
 
@@ -33,7 +34,7 @@ public class ReportAcc implements Report {
             text.append(employee.getName()).append(";")
                     .append(DATE_FORMAT.format(employee.getHired().getTime())).append(";")
                     .append(DATE_FORMAT.format(employee.getFired().getTime())).append(";")
-                    .append(employee.getSalary() * 1.2).append(";")
+                    .append(employee.getSalary() * INDEX).append(";")
                     .append(System.lineSeparator());
         }
         return text.toString();

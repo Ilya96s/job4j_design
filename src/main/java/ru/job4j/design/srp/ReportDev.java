@@ -36,7 +36,7 @@ public class ReportDev implements Report {
             text.append(employee.getName()).append(";")
                     .append(employee.getHired().getTime()).append(";")
                     .append(employee.getFired().getTime()).append(";")
-                    .append(employee.getSalary() * 1.2).append(";")
+                    .append(employee.getSalary()).append(";")
                     .append(System.lineSeparator());
         }
         text.append("</body>")
