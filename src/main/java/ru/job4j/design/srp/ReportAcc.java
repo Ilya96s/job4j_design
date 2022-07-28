@@ -11,8 +11,8 @@ import java.util.function.Predicate;
  * @author Ilya Kaltygin
  */
 public class ReportAcc implements Report {
-    static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd:MM:yyyy HH:mm");
-    static final double INDEX = 1.2;
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd:MM:yyyy HH:mm");
+    public static final double INDEX = 1.2;
 
     private Store store;
 

@@ -11,8 +11,6 @@ import java.util.function.Predicate;
  * @author Ilya Kaltygin
  */
 public class ReportDev implements Report {
-    static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd:MM:yyyy HH:mm");
-
     private Store store;
 
     public ReportDev(Store store) {
