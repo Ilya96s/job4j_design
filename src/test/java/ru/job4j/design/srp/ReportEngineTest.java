@@ -1,9 +1,15 @@
 package ru.job4j.design.srp;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.*;
 import static ru.job4j.design.srp.ReportEngine.DATE_FORMAT;
 import static ru.job4j.design.srp.ReportAcc.INDEX;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class ReportEngineTest {
@@ -96,5 +102,51 @@ public class ReportEngineTest {
                 .append(System.lineSeparator())
                 .append("</html>");
         assertThat(engine.generate(em -> true)).isEqualTo(expect.toString());
+    }
+
+    /**
+     * Отчет в формате XML
+     */
+    @Test
+    public void whenGenerateReportInXmlFormat() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 100);
+        store.add(worker);
+        Report engine = new ReportXML(store);
+        String fired = ReportXML.DATE_FORMAT.format(worker.getFired().getTime());
+        String hired = ReportXML.DATE_FORMAT.format(worker.getHired().getTime());
+        String exp = """
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employees>
+    <employees>
+        <employee>
+            <fired>%s</fired>
+            <hired>%s</hired>
+            <name>%s</name>
+            <salary>%s</salary>
+        </employee>
+    </employees>
+</employees>     
+""".formatted(fired, hired, worker.getName(), worker.getSalary());
+        assertThat(engine.generate(em -> true)).isEqualTo(exp);
+    }
+
+    /**
+     * Отчет в формате JSON
+     */
+    @Test
+    public void whenGenerateReportInJSONFormat() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 100);
+        store.add(worker);
+        Report engine = new ReportJSON(store);
+        Gson gson = new GsonBuilder().create();
+        String fired = gson.toJson(worker.getFired());
+        String hired = gson.toJson(worker.getHired());
+        String exp = """
+                [{"name":"%s","hired":%s,"fired":%s,"salary":%s}]""".formatted(worker.getName(), hired, fired, worker.getSalary());
+        assertThat(engine.generate(em -> true)).isEqualTo(exp);
     }
 }
