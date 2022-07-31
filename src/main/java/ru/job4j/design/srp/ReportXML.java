@@ -18,9 +18,13 @@ public class ReportXML implements Report {
     static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
     private Store store;
+    private JAXBContext context;
+    private Marshaller marshaller;
 
-    public ReportXML(Store store) {
+    public ReportXML(Store store) throws JAXBException {
         this.store = store;
+        this.context = JAXBContext.newInstance(Employees.class);
+        this.marshaller = context.createMarshaller();
     }
 
     /**
@@ -45,10 +49,8 @@ public class ReportXML implements Report {
      * @return XML формат
      * @throws JAXBException Исключение
      */
-    private static String xmlFormat(List<Employee> employees) throws JAXBException {
+    private String xmlFormat(List<Employee> employees) throws JAXBException {
         String xml = "";
-        JAXBContext context = JAXBContext.newInstance(Employees.class);
-        Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         try (StringWriter writer = new StringWriter()) {
             marshaller.marshal(new Employees(employees), writer);

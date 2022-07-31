@@ -4,12 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.bind.JAXBException;
+
 import static org.assertj.core.api.Assertions.*;
 import static ru.job4j.design.srp.ReportEngine.DATE_FORMAT;
 import static ru.job4j.design.srp.ReportAcc.INDEX;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class ReportEngineTest {
@@ -113,22 +113,27 @@ public class ReportEngineTest {
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", now, now, 100);
         store.add(worker);
-        Report engine = new ReportXML(store);
+        Report engine = null;
+        try {
+            engine = new ReportXML(store);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
         String fired = ReportXML.DATE_FORMAT.format(worker.getFired().getTime());
         String hired = ReportXML.DATE_FORMAT.format(worker.getHired().getTime());
-        String exp = """
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<employees>
-    <employees>
-        <employee>
-            <fired>%s</fired>
-            <hired>%s</hired>
-            <name>%s</name>
-            <salary>%s</salary>
-        </employee>
-    </employees>
-</employees>     
-""".formatted(fired, hired, worker.getName(), worker.getSalary());
+        String exp = ("""
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <employees>
+                    <employees>
+                        <employee>
+                            <fired>%s</fired>
+                            <hired>%s</hired>
+                            <name>%s</name>
+                            <salary>%s</salary>
+                        </employee>
+                    </employees>
+                </employees>
+                """).formatted(fired, hired, worker.getName(), worker.getSalary());
         assertThat(engine.generate(em -> true)).isEqualTo(exp);
     }
 

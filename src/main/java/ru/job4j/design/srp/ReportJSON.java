@@ -13,9 +13,11 @@ import java.util.function.Predicate;
  */
 public class ReportJSON implements Report {
     private Store store;
+    private Gson gson;
 
     public ReportJSON(Store store) {
         this.store = store;
+        this.gson = new GsonBuilder().create();
     }
 
     /**
@@ -33,8 +35,7 @@ public class ReportJSON implements Report {
      * @param employee Список объектов
      * @return JSON формат
      */
-    private static String jsonFormat(List<Employee> employee) {
-        Gson gson = new GsonBuilder().create();
+    private String jsonFormat(List<Employee> employee) {
         return gson.toJson(employee);
     }
 }
