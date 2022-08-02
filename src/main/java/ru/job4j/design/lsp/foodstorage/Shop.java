@@ -1,7 +1,5 @@
 package ru.job4j.design.lsp.foodstorage;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +11,9 @@ import java.util.List;
  * @author Ilya Kaltygin
  */
 public class Shop implements Store {
+    private static final int COEFF_75 = 75;
+    private static final int COEFF_25 = 25;
+    private static final int COEFF_100 = 100;
     private List<Food> shopFoodList = new ArrayList<>();
 
     /**
@@ -20,28 +21,28 @@ public class Shop implements Store {
      * @param food Продукт
      */
     @Override
-    public void add(Food food) {
-        shopFoodList.add(food);
+    public boolean add(Food food) {
+        if (check(food)) {
+            shopFoodList.add(food);
+        }
+        return true;
     }
 
     /**
      * Метод определеяет попадет ли продукт в данное хранилище
      * @param food Продукт
-     * @return      true если срок годности удовлетворяет требованиям данного хранилища, иначе false
+     * @return     true если срок годности удовлетворяет требованиям данного хранилища, иначе false
      */
     @Override
-    public boolean check(Food food, LocalDate currentDate) {
-        double total = food.getCreateDate().until(food.getExpiryDate(), ChronoUnit.DAYS);
-        double current = currentDate.until(food.getExpiryDate(), ChronoUnit.DAYS);
-        double percent = (current / total) * 100;
-        if (percent <= 75 && percent >= 25) {
-            return true;
-        } else if (percent < 25) {
-            food.setDiscount(0.5);
-            food.setPrice(food.getPrice() * food.getDiscount());
-            return true;
+    public boolean check(Food food) {
+        boolean rsl = false;
+        if (getPercentLifeExpired(food) >= COEFF_25 && getPercentLifeExpired(food) <= COEFF_75) {
+            rsl = true;
+        } else if (getPercentLifeExpired(food) > COEFF_75) {
+            food.setPrice(food.getPrice() - food.getDiscount());
+            rsl = true;
         }
-        return false;
+        return rsl;
     }
 
     /**
@@ -50,7 +51,7 @@ public class Shop implements Store {
      */
     @Override
     public List<Food> getAll() {
-        return shopFoodList;
+        return List.copyOf(shopFoodList);
     }
 
     /**

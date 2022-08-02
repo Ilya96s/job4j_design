@@ -1,7 +1,5 @@
 package ru.job4j.design.lsp.foodstorage;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import java.util.List;
  * @author Ilya Kaltygin
  */
 public class Trash implements Store {
+    private static final int COEFF_100 = 100;
     private List<Food> trashFoodList = new ArrayList<>();
 
     /**
@@ -20,8 +19,13 @@ public class Trash implements Store {
      * @param food Продукт
      */
     @Override
-    public void add(Food food) {
-        trashFoodList.add(food);
+    public boolean add(Food food) {
+        boolean rsl = false;
+        if (check(food)) {
+            trashFoodList.add(food);
+            rsl = true;
+        }
+        return rsl;
     }
 
     /**
@@ -30,11 +34,8 @@ public class Trash implements Store {
      * @return     true если срок годности удовлетворяет требованиям данного хранилища, иначе false
      */
     @Override
-    public boolean check(Food food, LocalDate currentDate) {
-        double total = food.getCreateDate().until(food.getExpiryDate(), ChronoUnit.DAYS);
-        double current = currentDate.until(food.getExpiryDate(), ChronoUnit.DAYS);
-        double percent = (current / total) * 100;
-        return percent <= 0;
+    public boolean check(Food food) {
+        return getPercentLifeExpired(food) >= COEFF_100;
     }
 
     /**
@@ -43,7 +44,7 @@ public class Trash implements Store {
      */
     @Override
     public List<Food> getAll() {
-        return trashFoodList;
+        return List.copyOf(trashFoodList);
     }
 
     /**

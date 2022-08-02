@@ -24,11 +24,9 @@ public class ControlQuality {
      * Метод распределяет продукты по хранилищам
      * @param food Продукт
      */
-    public void allocation(Food food, LocalDate currentDate) {
+    public void allocation(Food food) {
         for (Store storage : store) {
-            if (storage.check(food, currentDate)) {
                 storage.add(food);
-            }
         }
     }
 }

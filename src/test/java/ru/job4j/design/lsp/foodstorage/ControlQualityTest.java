@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Тесты для хранилища продуктов
@@ -20,18 +19,18 @@ class ControlQualityTest {
      */
     @Test
     void whenFoodGoIntoTheWareHouse() {
-        List<Store> storeList = List.of(
-                new Warehouse(),
-                new Shop(),
-                new Trash()
+        Store trash = new Trash();
+        Store shop = new Shop();
+        Store warehouse = new Warehouse();
+        List<Store> storages = List.of(
+                trash, shop, warehouse
         );
-        LocalDate expiryDate = LocalDate.of(2022, 12, 31);
-        LocalDate createDate = LocalDate.of(2022, 11, 5);
-        Food milk = new Milk("Milk", expiryDate, createDate, 100, 0.5);
-        ControlQuality quality = new ControlQuality(storeList);
-        quality.allocation(milk, LocalDate.of(2022, 11, 5));
-        Store store = storeList.get(0);
-        assertThat(store.getAll()).isEqualTo(List.of(milk));
+        ControlQuality controlQuality = new ControlQuality(storages);
+        LocalDate expiryDate = LocalDate.now().plusDays(400);
+        LocalDate createDate = LocalDate.now().minusDays(10);
+        Food food = new Milk("Milk", expiryDate, createDate, 50, 0.5);
+        controlQuality.allocation(food);
+        assertThat(warehouse.getAll()).isEqualTo(List.of(food));
     }
 
     /**
@@ -39,18 +38,18 @@ class ControlQualityTest {
      */
     @Test
     void whenFoodGoIntoTheShop() {
-        List<Store> storeList = List.of(
-                new Warehouse(),
-                new Shop(),
-                new Trash()
+        Store trash = new Trash();
+        Store shop = new Shop();
+        Store warehouse = new Warehouse();
+        List<Store> storages = List.of(
+                trash, shop, warehouse
         );
-        LocalDate expiryDate = LocalDate.of(2022, 12, 31);
-        LocalDate createDate = LocalDate.of(2022, 11, 5);
-        Food milk = new Milk("Milk", expiryDate, createDate, 100, 0.5);
-        ControlQuality quality = new ControlQuality(storeList);
-        quality.allocation(milk, LocalDate.of(2022, 11, 30));
-        Store store = storeList.get(1);
-        assertThat(store.getAll()).isEqualTo(List.of(milk));
+        ControlQuality controlQuality = new ControlQuality(storages);
+        LocalDate expiryDate = LocalDate.now().plusDays(100);
+        LocalDate createDate = LocalDate.now().minusDays(100);
+        Food food = new Milk("Milk", expiryDate, createDate, 50, 0.5);
+        controlQuality.allocation(food);
+        assertThat(shop.getAll()).isEqualTo(List.of(food));
     }
 
     /**
@@ -58,18 +57,18 @@ class ControlQualityTest {
      */
     @Test
     void whenFoodGoIntoTheTrash() {
-        List<Store> storeList = List.of(
-                new Warehouse(),
-                new Shop(),
-                new Trash()
+        Store trash = new Trash();
+        Store shop = new Shop();
+        Store warehouse = new Warehouse();
+        List<Store> storages = List.of(
+                trash, shop, warehouse
         );
-        LocalDate expiryDate = LocalDate.of(2022, 12, 31);
-        LocalDate createDate = LocalDate.of(2022, 11, 5);
-        Food milk = new Milk("Milk", expiryDate, createDate, 100, 0.5);
-        ControlQuality quality = new ControlQuality(storeList);
-        quality.allocation(milk, LocalDate.of(2023, 1, 5));
-        Store store = storeList.get(2);
-        assertThat(store.getAll()).isEqualTo(List.of(milk));
+        ControlQuality controlQuality = new ControlQuality(storages);
+        LocalDate expiryDate = LocalDate.now().minusDays(100);
+        LocalDate createDate = LocalDate.now().minusDays(200);
+        Food food = new Milk("Milk", expiryDate, createDate, 50, 0.5);
+        controlQuality.allocation(food);
+        assertThat(trash.getAll()).isEqualTo(List.of(food));
     }
 
     /**
@@ -77,18 +76,19 @@ class ControlQualityTest {
      */
     @Test
     void whenExpiredDateLessThan75ThenNewPrice() {
-        List<Store> storeList = List.of(
-                new Warehouse(),
-                new Shop(),
-                new Trash()
+        Store trash = new Trash();
+        Store shop = new Shop();
+        Store warehouse = new Warehouse();
+        List<Store> storages = List.of(
+                trash, shop, warehouse
         );
-        LocalDate expiryDate = LocalDate.of(2022, 12, 31);
-        LocalDate createDate = LocalDate.of(2022, 11, 5);
-        Food milk = new Milk("Milk", expiryDate, createDate, 100, 0.5);
-        ControlQuality quality = new ControlQuality(storeList);
-        quality.allocation(milk, LocalDate.of(2022, 12, 20));
-        Store store = storeList.get(1);
-        assertThat(store.get(0).getPrice()).isEqualTo(50);
+        ControlQuality controlQuality = new ControlQuality(storages);
+        LocalDate expiryDate = LocalDate.now().plusDays(5);
+        LocalDate createDate = LocalDate.now().minusDays(50);
+        Food food = new Milk("Milk", expiryDate, createDate, 50, 30);
+        controlQuality.allocation(food);
+
+        assertThat(food.getPrice()).isEqualTo(20);
     }
 
 }

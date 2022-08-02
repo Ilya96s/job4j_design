@@ -8,7 +8,7 @@ import java.util.Objects;
  *
  * @author Ilya Kaltygin
  */
-public class Food {
+public abstract class Food {
     private String name;
     private LocalDate expiryDate;
     private LocalDate createDate;

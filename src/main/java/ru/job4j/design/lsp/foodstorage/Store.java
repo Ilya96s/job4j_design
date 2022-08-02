@@ -1,6 +1,7 @@
 package ru.job4j.design.lsp.foodstorage;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -13,14 +14,14 @@ public interface Store {
      * Добавить продукт в хранилище
      * @param food Продукт
      */
-    void add(Food food);
+    boolean add(Food food);
 
     /**
      * Проверить срок годности по заданным условиям
      * @param food
      * @return
      */
-    boolean check(Food food, LocalDate currentDate);
+    boolean check(Food food);
 
     /**
      * Вернуть список продуктов из хранилища
@@ -33,4 +34,15 @@ public interface Store {
      * @return Продукт
      */
     Food get(int index);
+
+    /**
+     * Подсчет процента срока годности продукта
+     * @param food  Продукт
+     * @return      Текущий процент срока годности
+     */
+    default double getPercentLifeExpired(Food food) {
+        double total = food.getCreateDate().until(food.getExpiryDate(), ChronoUnit.DAYS);
+        double current = food.getCreateDate().until(LocalDate.now(), ChronoUnit.DAYS);
+        return (current / total) * 100;
+    }
 }

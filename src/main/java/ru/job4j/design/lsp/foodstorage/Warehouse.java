@@ -13,6 +13,7 @@ import java.util.List;
  * @author Ilya Kaltygin
  */
 public class Warehouse implements Store {
+    private static final int COEFF_25 = 25;
     private List<Food> wareHouseFoodList = new ArrayList<>();
 
     /**
@@ -20,8 +21,13 @@ public class Warehouse implements Store {
      * @param food Продукт
      */
     @Override
-    public void add(Food food) {
-        wareHouseFoodList.add(food);
+    public boolean add(Food food) {
+        boolean rsl = false;
+        if (check(food)) {
+            wareHouseFoodList.add(food);
+            rsl =  true;
+        }
+        return rsl;
     }
 
     /**
@@ -30,11 +36,8 @@ public class Warehouse implements Store {
      * @return     true если срок годности удовлетворяет требованиям данного хранилища, иначе false
      */
     @Override
-    public boolean check(Food food, LocalDate currentDate) {
-        double total = food.getCreateDate().until(food.getExpiryDate(), ChronoUnit.DAYS);
-        double current = currentDate.until(food.getExpiryDate(), ChronoUnit.DAYS);
-        double percent = (current / total) * 100;
-        return percent > 75;
+    public boolean check(Food food) {
+        return getPercentLifeExpired(food) < COEFF_25;
     }
 
     /**
@@ -43,7 +46,7 @@ public class Warehouse implements Store {
      */
     @Override
     public List<Food> getAll() {
-        return wareHouseFoodList;
+        return List.copyOf(wareHouseFoodList);
     }
 
     /**
