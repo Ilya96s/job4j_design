@@ -38,7 +38,7 @@ public class Shop implements Store {
         boolean rsl = false;
         if (getPercentLifeExpired(food) >= COEFF_25 && getPercentLifeExpired(food) <= COEFF_75) {
             rsl = true;
-        } else if (getPercentLifeExpired(food) > COEFF_75) {
+        } else if (getPercentLifeExpired(food) > COEFF_75 && getPercentLifeExpired(food) < COEFF_100) {
             food.setPrice(food.getPrice() - food.getDiscount());
             rsl = true;
         }
