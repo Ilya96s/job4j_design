@@ -13,6 +13,6 @@ public interface ParkStore {
      * @param auto Объект типа Auto
      * @return     Возвращает true, если машина встала на парковку, иначе false;
      */
-    boolean addAuto(Auto auto);
+    boolean add(Auto auto);
 
 }

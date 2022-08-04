@@ -14,7 +14,7 @@ public class Parking implements ParkStore {
      * @return     Возвращает true, если машина встала на парковку, иначе false;
      */
     @Override
-    public boolean addAuto(Auto auto) {
+    public boolean add(Auto auto) {
         return false;
     }
 }

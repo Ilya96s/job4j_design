@@ -13,6 +13,6 @@ public interface Auto {
      *
      * @return Метод возвращает кол-во занимаемых мест на парковке
      */
-    int defineSize();
+    int getSize();
 
 }
