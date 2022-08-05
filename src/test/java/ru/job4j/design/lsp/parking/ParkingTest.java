@@ -1,6 +1,6 @@
 package ru.job4j.design.lsp.parking;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +16,6 @@ class ParkingTest {
      * Когда добавили автомобиль на парковку
      */
     @Test
-    @Disabled
     void whenAdd() {
         ParkStore park = new Parking(2, 1);
         Auto passengerAuto1 = new PassengerAuto();
@@ -31,7 +30,6 @@ class ParkingTest {
      * Получение размеров автомобилей
      */
     @Test
-    @Disabled
     void whenGetSize() {
         Auto truckAuto = new TruckAuto(3);
         Auto passengerAuto = new PassengerAuto();
@@ -45,7 +43,6 @@ class ParkingTest {
      * Когда на парковке нет мест и автомобили не добавились
      */
     @Test
-    @Disabled
     void whenParkIsFull() {
         ParkStore park = new Parking(2, 2);
         Auto passengerAuto1 = new PassengerAuto();
@@ -66,7 +63,6 @@ class ParkingTest {
      * Когда добавили грузовые автомобили на места легковых
      */
     @Test
-    @Disabled
     void whenAddTruckAutoToThePassengerPark() {
         ParkStore park = new Parking(7, 0);
         Auto truckAuto1 = new TruckAuto(2);
@@ -78,5 +74,16 @@ class ParkingTest {
         assertThat(rsl1).isTrue();
         assertThat(rsl2).isTrue();
         assertThat(rsl3).isTrue();
+    }
+
+    /**
+     * Когда ожидаем появлиние исключения
+     */
+    @Test
+    void whenExpectedException() {
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Auto truckAuto = new TruckAuto(1);
+        });
+        Assertions.assertEquals("Truck auto size must be greater than 1", thrown.getMessage());
     }
 }

@@ -6,7 +6,7 @@ package ru.job4j.design.lsp.parking;
  * @author Ilya Kaltygin
  */
 public class PassengerAuto implements Auto {
-    private static final int SIZE = 1;
+    public static final int SIZE = 1;
 
     /**
      * @return Метод возвращает размер автомобиля
