@@ -37,14 +37,12 @@ public class Parking implements ParkStore {
     @Override
     public boolean add(Auto auto) {
         boolean rsl = false;
-        if (auto.getSize() == SIZE) {
-            if (checkPassSeat()) {
+        if (!checkPark(auto)) {
+            if (auto.getSize() == SIZE && checkPassSeat()) {
                 passengerAuto.add(auto);
                 passSeat--;
                 rsl = true;
-            }
-        } else if (auto.getSize() > SIZE) {
-            if (checkTruckSeat()) {
+            } else if (auto.getSize() > SIZE && checkTruckSeat()) {
                 truckAuto.add(auto);
                 truckSeat--;
                 rsl = true;
@@ -80,5 +78,14 @@ public class Parking implements ParkStore {
      */
     private boolean checkPassSeatForTruck(Auto auto) {
         return truckSeat == 0 && passSeat >= auto.getSize();
+    }
+
+    /**
+     * Проверка хранилищ на наличие автомобиля
+     * @param auto Объект типа Auto
+     * @return     True если такого автомобиля нет на парковке, иначе false
+     */
+    private boolean checkPark(Auto auto) {
+        return passengerAuto.contains(auto) || truckAuto.contains(auto);
     }
 }
