@@ -4,6 +4,8 @@ import java.util.*;
 
 /**
  * Каркас меню
+ *
+ * @author Ilya Kaltygin
  */
 public class SimpleMenu implements Menu {
 
@@ -11,17 +13,25 @@ public class SimpleMenu implements Menu {
 
     @Override
     public boolean add(String parentName, String childName, ActionDelegate actionDelegate) {
-        return false;
+        if (findItem(childName).isPresent()) {
+            return false;
+        }
+        if (Objects.equals(parentName, ROOT)) {
+            rootElements.add(new SimpleMenuItem(childName, actionDelegate));
+        } else {
+            Optional<ItemInfo> parentItem = findItem(parentName);
+            if (parentItem.isPresent()) {
+                parentItem.get().menuItem.getChildren().add(new SimpleMenuItem(childName, actionDelegate));
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public Optional<MenuItemInfo> select(String itemName) {
-        Optional<MenuItemInfo> rsl = Optional.empty();
-        if (findItem(itemName).isPresent()) {
-            rsl = Optional.of(new MenuItemInfo(findItem(itemName).get().menuItem,
-                    findItem(itemName).get().number));
-        }
-        return rsl;
+        return findItem(itemName).map(i -> new MenuItemInfo(i.menuItem, i.number));
     }
 
     @Override
@@ -35,9 +45,6 @@ public class SimpleMenu implements Menu {
 
             @Override
             public MenuItemInfo next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
                 ItemInfo itemInfo = dfsIterator.next();
                 return new MenuItemInfo(itemInfo.menuItem, itemInfo.number);
             }
@@ -49,8 +56,10 @@ public class SimpleMenu implements Menu {
         Optional<ItemInfo> rsl = Optional.empty();
         while (iterator.hasNext()) {
             ItemInfo itemInfo = iterator.next();
-            rsl = Optional.of(itemInfo);
-            break;
+            if (name.equals(itemInfo.menuItem.getName())) {
+                rsl = Optional.of(itemInfo);
+                break;
+            }
         }
         return rsl;
     }
