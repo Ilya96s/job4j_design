@@ -2,7 +2,8 @@ package ru.job4j.design.isp.menu;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
@@ -45,12 +46,20 @@ class SimpleMenuTest {
         menu.add("Сходить в магазин", "Купить продукты", STUB_ACTION);
         menu.add("Купить продукты", "Купить хлеб", STUB_ACTION);
         menu.add("Купить продукты", "Купить молоко", STUB_ACTION);
-        Iterator<Menu.MenuItemInfo> it = menu.iterator();
-        assertThat("Сходить в магазин").isEqualTo(it.next().getName());
-        assertThat("Купить продукты").isEqualTo(it.next().getName());
-        assertThat("Купить хлеб").isEqualTo(it.next().getName());
-        assertThat("Купить молоко").isEqualTo(it.next().getName());
-        assertThat("Покормить собаку").isEqualTo(it.next().getName());
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PrintStream prev = System.out;
+        PrintStream now = new PrintStream(output);
+        System.setOut(now);
+        new SimpleMenuPrinter().print(menu);
+        System.setOut(prev);
+        String expected = String.join(System.lineSeparator(),
+        "1.Сходить в магазин",
+        "---1.1.Купить продукты",
+        "------1.1.1.Купить хлеб",
+        "------1.1.2.Купить молоко",
+        "2.Покормить собаку" + System.lineSeparator());
+        assertThat(expected).isEqualTo(output.toString());
+
     }
 
     /**
