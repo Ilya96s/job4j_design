@@ -10,6 +10,12 @@ import java.util.List;
  * @author Ilya kaltygin
  */
 public interface Store {
+
+    /**
+     * Удалить все продукты из хранилища
+     */
+    public void deleteAllProduct();
+
     /**
      * Добавить продукт в хранилище
      * @param food Продукт

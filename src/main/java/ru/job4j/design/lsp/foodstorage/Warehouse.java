@@ -17,6 +17,14 @@ public class Warehouse implements Store {
     private List<Food> wareHouseFoodList = new ArrayList<>();
 
     /**
+     * Удаление всех продуктов из хранилища
+     */
+    @Override
+    public void deleteAllProduct() {
+        wareHouseFoodList.clear();
+    }
+
+    /**
      * Добавление продукта в хранилище
      * @param food Продукт
      */

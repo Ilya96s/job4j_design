@@ -1,6 +1,6 @@
 package ru.job4j.design.lsp.foodstorage;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +27,20 @@ public class ControlQuality {
     public void allocation(Food food) {
         for (Store storage : store) {
                 storage.add(food);
+        }
+    }
+
+    /**
+     * Метод извлекает все продукты и перераспределяет их заново
+     */
+    public void resort() {
+        List<Food> foodList = new ArrayList<>();
+        for (Store storage : store) {
+            foodList.addAll(storage.getAll());
+            storage.deleteAllProduct();
+        }
+        for (Food food : foodList) {
+            allocation(food);
         }
     }
 }

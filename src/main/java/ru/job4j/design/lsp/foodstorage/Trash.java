@@ -15,6 +15,14 @@ public class Trash implements Store {
     private List<Food> trashFoodList = new ArrayList<>();
 
     /**
+     * Удаление всех продуктов из хранилища
+     */
+    @Override
+    public void deleteAllProduct() {
+        trashFoodList.clear();
+    }
+
+    /**
      * Добавление продукта в хранилище
      * @param food Продукт
      */
