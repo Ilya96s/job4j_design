@@ -9,7 +9,14 @@ import java.util.Scanner;
  */
 public class TODOApp {
     public static final ActionDelegate STUB_ACTION = System.out::println;
-
+    public static final String MENU_ACTIONS =
+            """
+                    Введите команду:
+                    1 - Добавить задачу
+                    2 - Добавить подзадачу
+                    3 - Вывести список задач
+                    4 - Выход
+                    """;
     private static final String ADD = "1";
     private static final String ADD_SUB = "2";
     private static final String PRINT_TASK = "3";
@@ -20,11 +27,7 @@ public class TODOApp {
         Menu menu = new SimpleMenu();
         MenuPrinter printer = new SimpleMenuPrinter();
         while (true) {
-            System.out.println("Введите команду:\n"
-                    + ADD + " - добавить задачу\n"
-                    + ADD_SUB + " - добавить подзадачу\n"
-                    + PRINT_TASK + " - вывести список задач\n"
-                    + EXIT + " - выход");
+            System.out.println(MENU_ACTIONS);
             String request = scanner.nextLine();
             if (EXIT.equals(request)) {
                 break;

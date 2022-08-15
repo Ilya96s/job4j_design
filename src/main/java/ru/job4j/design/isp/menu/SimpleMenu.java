@@ -16,16 +16,18 @@ public class SimpleMenu implements Menu {
         if (findItem(childName).isPresent()) {
             return false;
         }
+
         if (Objects.equals(parentName, ROOT)) {
             rootElements.add(new SimpleMenuItem(childName, actionDelegate));
-        } else {
-            Optional<ItemInfo> parentItem = findItem(parentName);
-            if (parentItem.isPresent()) {
-                parentItem.get().menuItem.getChildren().add(new SimpleMenuItem(childName, actionDelegate));
-            } else {
-                return false;
-            }
+            return true;
         }
+
+        Optional<ItemInfo> parentItem = findItem(parentName);
+        if (parentItem.isEmpty()) {
+            return false;
+        }
+
+        parentItem.get().menuItem.getChildren().add(new SimpleMenuItem(childName, actionDelegate));
         return true;
     }
 
