@@ -72,7 +72,6 @@ class BoxTest {
                 .isPositive();
     }
 
-
     @Test
     void whenBoxHasNotArea() {
         Box box = new Box(5, 10);
